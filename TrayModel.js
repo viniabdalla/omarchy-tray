@@ -1,4 +1,15 @@
-var SECTIONS = ["left", "center", "right"]
+var SECTIONS = ["left", "centerBegin", "center", "centerEnd", "right"]
+
+// Resolve both the original Loader/slot tree and the pooled WidgetHost tree.
+function findBarSlot(item) {
+  while (item) {
+    if (typeof item.moduleName === "string" && typeof item.region === "string"
+        && typeof item.dragSource === "boolean") return item
+    if (item.owner && typeof item.owner.region === "string") return item.owner
+    item = item.parent
+  }
+  return null
+}
 
 function text(value) {
   return String(value || "").toLowerCase()
@@ -257,6 +268,7 @@ function movedBefore(order, id, beforeId) {
 
 if (typeof module !== "undefined") {
   module.exports = {
+    findBarSlot: findBarSlot,
     asList: asList,
     ensurePluginListed: ensurePluginListed,
     unlistPlugin: unlistPlugin,

@@ -584,11 +584,12 @@ BarWidget {
     // are slot coordinates. Covers the whole widget; presses in the chevron
     // zone are rejected below so they fall through to the slot's MouseArea,
     // making the chevron the tray's only whole-widget drag handle.
-    parent: root.parent && root.parent.parent ? root.parent.parent : root
+    parent: TrayModel.findBarSlot(root.parent) || root
     z: 60
     visible: root.visible && parent !== root
-    x: 0
-    y: 0
+    readonly property var origin: parent !== root ? root.mapToItem(parent, 0, 0) : Qt.point(0, 0)
+    x: origin.x
+    y: origin.y
     width: root.width
     height: root.height
 
